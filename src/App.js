@@ -1,10 +1,43 @@
+import { useState } from 'react';
 import './App.css';
+import SingleCard from './components/SingleCard'
+
+const cardImages = [
+  { "src": "/img/helmet-1.png" },
+  { "src": "/img/potion-1.png" },
+  { "src": "/img/ring-1.png" },
+  { "src": "/img/scroll-1.png" },
+  { "src": "/img/shield-1.png" },
+  { "src": "/img/sword-1.png" },
+]
+
 
 function App() {
+  const [cards, setCard] = useState([])
+  const [turns, setTurn] = useState(0)
+
+  //duplica as cartas, randomizar a renderização, da id aleatroio para cada carta
+  const shuffleCards = () => {
+                          //spread a mesma array duas vezes na mesma array
+    const shuffledCards = [...cardImages, ...cardImages]
+    .sort(() => Math.random() - 0.5)
+    .map((card) => ({...card, id: Math.random()}))
+
+    setCard(shuffledCards)
+    setTurn(0)
+  }
+  console.log(cards, turns)
+
   return (
     <div className="App">
       <h1>Magic Game</h1>
-      <button>New Game</button>
+      <button onClick={shuffleCards}>New Game</button>
+
+      <div className='card-grid'>
+        {cards.map(card =>(
+          <SingleCard  key={card.id} card={card}/>
+        ))}
+      </div>
     </div>
   );
 }
