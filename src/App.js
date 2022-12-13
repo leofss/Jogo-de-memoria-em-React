@@ -17,7 +17,7 @@ function App() {
   const [turns, setTurn] = useState(0)
   const [choiceOne, setChoiceOne] = useState(null)
   const [choiceTwo, setChoiceTwo] = useState(null)
-
+  const [disabled, setDisabled] = useState(false)
   //duplica as cartas, randomizar a renderização, da id aleatroio para cada carta
   const shuffleCards = () => {
                           //spread a mesma array duas vezes na mesma array
@@ -33,7 +33,9 @@ function App() {
   }
 
   useEffect(() => {
+  
     if(choiceOne && choiceTwo){
+      setDisabled(true)
       if(choiceOne.src === choiceTwo.src){
         setCard(prevCards =>{
           return prevCards.map(card =>{
@@ -55,6 +57,7 @@ function App() {
 
   console.log(cards)
   const resetTurn = () => {
+    setDisabled(false)
     setChoiceOne(null)
     setChoiceTwo(null)
     setTurn(prevTurn => prevTurn + 1)
@@ -68,7 +71,9 @@ function App() {
       <div className='card-grid'>
         {cards.map(card =>(
           <SingleCard handleChoice={handleChoice} key={card.id} card={card} 
-          flipped={card === choiceOne || card === choiceTwo || card.matched}/>
+          flipped={card === choiceOne || card === choiceTwo || card.matched}
+          disabled={disabled}
+          />
         ))}
       </div>
     </div>
